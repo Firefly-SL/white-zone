@@ -1,17 +1,19 @@
 use eframe::egui;
+use eframe::egui::RichText;
 use egui::CentralPanel;
 
 use crate::time;
 use crate::fonts;
 use crate::render;
+use crate::time::days_in_year;
 
 // strcut for app
 // it is like saying this varible will be this type
 pub struct App {
-    year: String,
-    days_passed: u32,
-    days_passed_percentage: u32,
-    days_left: u32,
+    year: i32,
+    days_passed: i32,
+    days_passed_percentage: i32,
+    days_in_year: i32,
 }
 
 // assinging value to those variables
@@ -27,7 +29,7 @@ impl App {
             year: time::current_year_string(),
             days_passed,
             days_passed_percentage,
-            days_left: time::days_left() - days_passed,
+            days_in_year: time::days_in_year() - days_passed,
         }
     }
 }
@@ -48,39 +50,63 @@ impl eframe::App for App {
         
         // CentralPanel more like control panel, all ui stuff is in here
         CentralPanel::default().show(ctx, |ui| {
-            // idk what it does and didn't wanna remove it
-            // let width = ui.ctx().content_rect().size().x;
-            // let height = ui.ctx().content_rect().size().y;
-            
+        
+            // this gets the current window width and height
+            let width = ctx.viewport_rect().width();
+            let height = ctx.viewport_rect().height();
+        
+            let mut style = (*ctx.style()).clone();
+        
+            style.text_styles.insert(
+                egui::TextStyle::Body,
+                egui::FontId::new(
+                    height * 0.032,
+                    egui::FontFamily::Proportional
+                ),);
+        
+            style.text_styles.insert(
+                egui::TextStyle::Heading,
+                egui::FontId::new(
+                    height * 0.05,
+                    egui::FontFamily::Name("Bold".into())),
+            );
+            ctx.set_style(style);
+        
             // A frame is a fancy stuff that let you do fancy stuff
             egui::Frame::new()
             .inner_margin(eframe::egui::Margin { left: 32, right: 32, top: 32, bottom: 32}) //padding
             .corner_radius(egui::CornerRadius::same(24)) // corner radius
             .fill(egui::Color32::from_rgba_premultiplied(26, 26, 26, 255)) // i am not sure if it inside color or outside color
             .show(ui, |ui|{
-                ui.spacing_mut().item_spacing.y = -6.0; // negative spacing for horizontal text, dynamic needed here
+                
+                // −0.012
+                ui.spacing_mut().item_spacing.y = height * -0.012; // negative spacing for horizontal text, dynamic needed here
                 ui.horizontal(|ui|{ // first row
-                    ui.heading(&self.year);
+                    ui.heading(RichText::new(&self.year.to_string())
+                            .color(egui::Color32::from_rgb(254, 254, 254))
+                        );
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Max), |ui| {
-                        ui.heading(&self.days_left.to_string());
+                        ui.heading(RichText::new(&self.days_in_year.to_string())
+                            .color(egui::Color32::from_rgb(254, 254, 254))
+                        );
                     });
                 });
                 ui.horizontal(|ui| { // second row
                     ui.label(format!("Day {} - {}%", (&self.days_passed).to_string(), (&self.days_passed_percentage).to_string()));
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Max), |ui| {
-                        ui.label(format!("{} left", if self.days_left == 1 {"Day".to_string()} else {"Days".to_string()}));
+                        ui.label(format!("{} left", if self.days_in_year == 1 {"Day".to_string()} else {"Days".to_string()}));
                     });
                 });
-                ui.add_space(20.0); // space between text and grid
+                ui.add_space(width * 0.04); // space between text and grid
                 ui.with_layout(egui::Layout::centered_and_justified(egui::Direction::TopDown), |ui| {
                     render::draw_year_progress_grid(
                         ui,
-                        365,
+                        days_in_year(),
                         self.days_passed,
-                        21,
-                        5.2,
-                        5.0,
-                    );                    
+                        21, // cols
+                        width * 0.0115, // dot radius
+                        height * 0.012, // dot spacing
+                    );
                 });
             })
         });

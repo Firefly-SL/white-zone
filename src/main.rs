@@ -10,7 +10,13 @@ fn main() {
     // window magics happen in here, for me.
     let native_options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
-        .with_inner_size([450.00, 500.00]),
+        .with_inner_size([400.00, 450.00])
+        .with_app_id("whitezone")
+        .with_decorations(false)
+        .with_taskbar(false)
+        .with_transparent(true)
+        .with_window_level(egui::WindowLevel::AlwaysOnBottom)
+        .with_resizable(false),
         ..Default::default()
     };
     

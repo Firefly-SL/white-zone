@@ -4,9 +4,9 @@ use eframe::egui;
 // dot grid
 pub fn draw_year_progress_grid(
     ui: &mut Ui,
-    total_days: u32,
-    passed_days: u32,
-    cols: u32,
+    total_days: i32,
+    passed_days: i32,
+    cols: i32,
     dot_radius: f32,
     dot_spacing: f32,
 ) {
