@@ -36,50 +36,47 @@ impl App {
 
 // the place where all the magic happen
 impl eframe::App for App {
+    fn clear_color(&self, _visuals: &egui::Visuals) -> [f32; 4] {
+        egui::Rgba::TRANSPARENT.to_array()
+    }
     // the actual place where all the magic happen
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         // this suppose to make the things sleep if nothing happens, not sure what it does.
         ctx.request_repaint_after(std::time::Duration::from_secs(3600));
         
-        // to set window colors, i played with a lot never figured out how it works
-        ctx.set_visuals(egui::Visuals {
-            panel_fill: egui::Color32::from_rgba_premultiplied(26, 26, 26, 0),
-            window_fill: egui::Color32::from_rgba_premultiplied(26, 26, 26, 0),
-            ..Default::default()
-        });
-        
         // CentralPanel more like control panel, all ui stuff is in here
-        CentralPanel::default().show(ctx, |ui| {
-        
-            // this gets the current window width and height
-            let width = ctx.viewport_rect().width();
-            let height = ctx.viewport_rect().height();
-        
-            let mut style = (*ctx.style()).clone();
-        
-            style.text_styles.insert(
-                egui::TextStyle::Body,
-                egui::FontId::new(
-                    height * 0.032,
-                    egui::FontFamily::Proportional
-                ),);
-        
-            style.text_styles.insert(
-                egui::TextStyle::Heading,
-                egui::FontId::new(
-                    height * 0.05,
-                    egui::FontFamily::Name("Bold".into())),
-            );
-            ctx.set_style(style);
-        
-            // A frame is a fancy stuff that let you do fancy stuff
+        CentralPanel::default()
+            .frame(egui::Frame::NONE)
+            .show(ctx, |ui| {
+                // this gets the current window width and height
+                let width = ctx.viewport_rect().width();
+                let height = ctx.viewport_rect().height();
+                
+                
+                let mut style = (*ctx.style()).clone();
+                
+                style.text_styles.insert(
+                    egui::TextStyle::Body,
+                    egui::FontId::new(
+                        height * 0.032,
+                        egui::FontFamily::Proportional
+                    ),);
+            
+                style.text_styles.insert(
+                    egui::TextStyle::Heading,
+                    egui::FontId::new(
+                        height * 0.05,
+                        egui::FontFamily::Name("Bold".into())),
+                );
+                ctx.set_style(style);
+                // A frame is a fancy stuff that let you do fancy stuff
+
             egui::Frame::new()
             .inner_margin(eframe::egui::Margin { left: 32, right: 32, top: 32, bottom: 32}) //padding
-            .corner_radius(egui::CornerRadius::same(24)) // corner radius
-            .fill(egui::Color32::from_rgba_premultiplied(26, 26, 26, 255)) // i am not sure if it inside color or outside color
+            .corner_radius(24) // corner radius
+            .fill(egui::Color32::from_rgba_unmultiplied(22, 22, 22, 255)) // i am not sure if it inside color or outside color
             .show(ui, |ui|{
                 
-                // −0.012
                 ui.spacing_mut().item_spacing.y = height * -0.012; // negative spacing for horizontal text, dynamic needed here
                 ui.horizontal(|ui|{ // first row
                     ui.heading(RichText::new(&self.year.to_string())
@@ -94,7 +91,7 @@ impl eframe::App for App {
                 ui.horizontal(|ui| { // second row
                     ui.label(format!("Day {} - {}%", (&self.days_passed).to_string(), (&self.days_passed_percentage).to_string()));
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Max), |ui| {
-                        ui.label(format!("{} left", if self.days_in_year == 1 {"Day".to_string()} else {"Days".to_string()}));
+                        ui.label(format!("{} left", if self.days_in_year == 1 {"day".to_string()} else {"days".to_string()}));
                     });
                 });
                 ui.add_space(width * 0.04); // space between text and grid

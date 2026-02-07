@@ -16,7 +16,8 @@ fn main() {
         .with_taskbar(false)
         .with_transparent(true)
         .with_window_level(egui::WindowLevel::AlwaysOnBottom)
-        .with_resizable(false),
+        .with_resizable(false)
+        .with_has_shadow(false),
         ..Default::default()
     };
     

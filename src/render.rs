@@ -48,11 +48,17 @@ pub fn draw_year_progress_grid(
         };
     
         if i == today {
-            painter.circle_filled(
-                pos,
-                dot_radius,
-                Color32::from_rgba_premultiplied(255, 255, 255, 150),
-            );
+            for (r, a) in [
+                (dot_radius + 6.0, 10),
+                (dot_radius + 4.0, 20),
+                (dot_radius + 2.0, 30),
+            ] {
+                painter.circle_filled(
+                    pos,
+                    r,
+                    Color32::from_rgba_unmultiplied(255, 255, 255, a),
+                );
+            }
         }
     
         painter.circle_filled(pos, dot_radius, color);
