@@ -39,28 +39,28 @@ pub fn draw_year_progress_grid(
     
         let pos = egui::pos2(x + 0.5, y + 0.5);
     
-        let color = if i < today {
-            Color32::from_rgb(82, 81, 82)
-        } else if i == today {
-            Color32::from_rgba_premultiplied(254, 254, 254, 150)
-        } else {
-            Color32::from_rgba_premultiplied(212, 212, 212, 255)
-        };
-    
         if i == today {
             for (r, a) in [
-                (dot_radius + 6.0, 10),
-                (dot_radius + 4.0, 20),
-                (dot_radius + 2.0, 30),
+                (dot_radius * 2.6, 6),
+                (dot_radius * 1.9, 12),
+                (dot_radius * 1.4, 20),
             ] {
                 painter.circle_filled(
                     pos,
                     r,
-                    Color32::from_rgba_unmultiplied(255, 255, 255, a),
+                    Color32::from_rgba_unmultiplied(240, 240, 240, a),
                 );
             }
         }
     
+        let color = if i < today {
+            Color32::from_rgb(82, 81, 82)
+        } else if i == today {
+            Color32::from_rgb(254, 254, 254)
+        } else {
+            Color32::from_rgb(215, 215, 215)
+        };
+        
         painter.circle_filled(pos, dot_radius, color);
     }
 }

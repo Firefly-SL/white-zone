@@ -5,7 +5,6 @@ use egui::CentralPanel;
 use crate::time;
 use crate::fonts;
 use crate::render;
-use crate::time::days_in_year;
 
 // strcut for app
 // it is like saying this varible will be this type
@@ -14,6 +13,7 @@ pub struct App {
     days_passed: i32,
     days_passed_percentage: i32,
     days_in_year: i32,
+    last_height: f32,
 }
 
 // assinging value to those variables
@@ -30,6 +30,7 @@ impl App {
             days_passed,
             days_passed_percentage,
             days_in_year: time::days_in_year() - days_passed,
+            last_height: 0.0,
         }
     }
 }
@@ -42,7 +43,7 @@ impl eframe::App for App {
     // the actual place where all the magic happen
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         // this suppose to make the things sleep if nothing happens, not sure what it does.
-        ctx.request_repaint_after(std::time::Duration::from_secs(3600));
+        ctx.request_repaint_after(std::time::Duration::from_secs(1800));
         
         // CentralPanel more like control panel, all ui stuff is in here
         CentralPanel::default()
@@ -51,24 +52,26 @@ impl eframe::App for App {
                 // this gets the current window width and height
                 let width = ctx.viewport_rect().width();
                 let height = ctx.viewport_rect().height();
+
+                if (height - self.last_height).abs() > 0.5 {
+                    let mut style = (*ctx.style()).clone();
+
+                    style.text_styles.insert(
+                        egui::TextStyle::Body,
+                        egui::FontId::new(
+                            height * 0.032,
+                            egui::FontFamily::Proportional
+                        ),);
                 
-                
-                let mut style = (*ctx.style()).clone();
-                
-                style.text_styles.insert(
-                    egui::TextStyle::Body,
-                    egui::FontId::new(
-                        height * 0.032,
-                        egui::FontFamily::Proportional
-                    ),);
-            
-                style.text_styles.insert(
-                    egui::TextStyle::Heading,
-                    egui::FontId::new(
-                        height * 0.05,
-                        egui::FontFamily::Name("Bold".into())),
-                );
+                    style.text_styles.insert(
+                        egui::TextStyle::Heading,
+                        egui::FontId::new(
+                            height * 0.05,
+                            egui::FontFamily::Name("Bold".into())),
+                        );
                 ctx.set_style(style);
+                self.last_height = height;
+                };
                 // A frame is a fancy stuff that let you do fancy stuff
 
             egui::Frame::new()
@@ -98,7 +101,7 @@ impl eframe::App for App {
                 ui.with_layout(egui::Layout::centered_and_justified(egui::Direction::TopDown), |ui| {
                     render::draw_year_progress_grid(
                         ui,
-                        days_in_year(),
+                        self.days_in_year + self.days_passed,
                         self.days_passed,
                         21, // cols
                         width * 0.0115, // dot radius
