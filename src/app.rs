@@ -5,6 +5,7 @@ use egui::CentralPanel;
 use crate::time;
 use crate::fonts;
 use crate::render;
+use crate::config;
 
 // strcut for app
 // it is like saying this varible will be this type
@@ -20,6 +21,7 @@ pub struct App {
 // i think i should continue with the tutorials
 impl App {
     pub fn new(ctx: &eframe::egui::Context) -> Self {
+        // let config = config::load_or_create_config().unwrap();
         fonts::configure_fonts(ctx);
         
         // days_passed (it returns actual days passed in a year scope)
@@ -33,6 +35,25 @@ impl App {
             last_height: 0.0,
         }
     }
+    
+    fn reload_config(&mut self, ctx: &egui::Context) {
+        if let Ok(_) = config::load_or_create_config() {
+            // updaye fonts if changed
+            // fonts::configure_fonts(ctx);
+
+            // repaint
+            ctx.request_repaint();
+        }
+    }
+    
+    fn relaunch(&self) {
+        if let Ok(current_exe) = std::env::current_exe() {
+            if let Err(_) = std::process::Command::new(current_exe).spawn() {
+                return;
+            }
+            std::process::exit(0);
+        }
+    }
 }
 
 // the place where all the magic happen
@@ -42,8 +63,28 @@ impl eframe::App for App {
     }
     // the actual place where all the magic happen
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        // this suppose to make the things sleep if nothing happens, not sure what it does.
-        ctx.request_repaint_after(std::time::Duration::from_secs(1800));
+        // ctrl + r: reload everything
+        if ctx.input(|i| i.modifiers.ctrl && i.key_pressed(egui::Key::R)) {
+            self.reload_config(ctx);
+        }
+    
+        if ctx.input(|i| i.modifiers.shift && i.key_pressed(egui::Key::R)) {
+            self.relaunch();
+        }
+        
+        if ctx.input( |i| i.modifiers.ctrl && i.key_pressed(egui::Key::Q)) {
+            std::process::exit(0);
+        }
+        
+        // if no events, sleep
+        if ctx.input(|i| 
+            i.modifiers.ctrl && i.key_pressed(egui::Key::R) || 
+            i.modifiers.shift && i.key_pressed(egui::Key::R) ||
+                i.modifiers.ctrl && i.key_pressed(egui::Key::Q)
+        ) {
+            ctx.request_repaint_after(std::time::Duration::from_secs(1800));
+            return;
+        }
         
         // CentralPanel more like control panel, all ui stuff is in here
         CentralPanel::default()
@@ -92,7 +133,7 @@ impl eframe::App for App {
                     });
                 });
                 ui.horizontal(|ui| { // second row
-                    ui.label(format!("Day {} - {}%", (&self.days_passed).to_string(), (&self.days_passed_percentage).to_string()));
+                    ui.label(format!("Day {} • {}%", (&self.days_passed).to_string(), (&self.days_passed_percentage).to_string()));
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Max), |ui| {
                         ui.label(format!("{} left", if self.days_in_year == 1 {"day".to_string()} else {"days".to_string()}));
                     });
