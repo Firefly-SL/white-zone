@@ -12,24 +12,23 @@ use eframe::egui;
 fn main() {
     let config = config::load_or_create_config().unwrap();
     
-    // window magics happen in here, for me.
     let native_options = eframe::NativeOptions {
-        centered: true,
+        centered: config.window.lock_in_center,
         viewport: egui::ViewportBuilder::default()
-        .with_inner_size([config.window_width, config.window_height])
+        .with_inner_size([config.window.width, config.window.height])
+        .with_position(egui::Pos2::new(config.window.position[0], config.window.position[1]))
         .with_app_id("whitezone")
         .with_decorations(false)
         .with_title_shown(false)
         .with_titlebar_buttons_shown(false)
         .with_taskbar(false)
-        .with_resizable(false)
+        .with_resizable(config.window.resizable)
         .with_has_shadow(false)
         .with_window_level(egui::WindowLevel::AlwaysOnBottom)
         .with_transparent(true),
         ..Default::default()
     };
     
-    // the actual part that runs the app
     let _ = eframe::run_native(
         "White Zone",
         native_options,
