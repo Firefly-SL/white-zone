@@ -61,6 +61,7 @@ The `config.toml` file allows you to adjust:
 *   **Dot grid**: `column_count`, `color_past`, `color_future`, `color_today`, and `color_today_glow`.
 
 You can turn off lock_in_center to freely move the widget were you desire.
+
 NOTE: Now the funny part, resizing normaly, moving the app into another place will never presistent across reboots. don't ask me why i added those fields then, this lack of whatever will be fixed ASAP, even though this seems impossible to me. if you want to resize and change position use the fields size and position to do it manually.
 
 ## Contributing
@@ -69,6 +70,6 @@ Contributions are welcome! This project is on the early satges and i want to mak
 
 ## License
 
-The source code for white-zone is licensed under the GPL 3.0 license. See the [LICENSE.md](LICENSE.md) file for more details.
+The source code for white-zone is licensed under the GPL 3.0 license. See the [LICENSE](LICENSE) file for more details.
 
-The fonts included in this project (`Poppins-Regular.ttf` and `Poppins-SemiBold.ttf`) are licensed under the Open Font License (OFL). See [OFL.txt](src/fonts/OFL.txt) for more details.
+The fonts included in this project (`Poppins-Regular.ttf` and `Poppins-SemiBold.ttf`) are licensed under the Open Font License (OFL). See [OFL](src/fonts/OFL.txt) for more details.
