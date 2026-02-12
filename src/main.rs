@@ -15,12 +15,10 @@ fn main() {
     let native_options = eframe::NativeOptions {
         centered: config.window.lock_in_center,
         viewport: egui::ViewportBuilder::default()
-        .with_inner_size([config.window.width, config.window.height])
+        .with_inner_size([config.window.size[0], config.window.size[1]])
         .with_position(egui::Pos2::new(config.window.position[0], config.window.position[1]))
         .with_app_id("whitezone")
         .with_decorations(false)
-        .with_title_shown(false)
-        .with_titlebar_buttons_shown(false)
         .with_taskbar(false)
         .with_resizable(config.window.resizable)
         .with_has_shadow(false)

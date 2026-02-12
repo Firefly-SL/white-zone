@@ -32,4 +32,4 @@ pub fn configure_fonts(ctx: &eframe::egui::Context) {
     
     ctx.set_fonts(fonts);
     ctx.set_style(style);
-}
+}   

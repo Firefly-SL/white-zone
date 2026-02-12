@@ -12,22 +12,12 @@ pub struct Config {
 // Window
 #[derive(Serialize, Deserialize)]
 pub struct Window {
-    pub width: f32,
-    pub height: f32,
+    pub size: [f32; 2],
     pub resizable: bool,
-    pub lock_in_center: bool,
-    pub position: [f32; 2],
     pub corner_radius: u8,
-    pub padding: Padding,
+    pub position: [f32; 2],
+    pub lock_in_center: bool,
     pub drop_shadow: DropShadow,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Padding {
-    pub left: i8,
-    pub right: i8,
-    pub top: i8,
-    pub bottom: i8,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -95,13 +85,11 @@ impl Default for Config {
     fn default() -> Self {
         Self {
             window: Window { 
-                width: 325.00,
-                height: 375.00, 
+                size: [325.00, 375.00],
                 resizable: false,
-                lock_in_center: true,
                 position: [0.0, 0.0],
                 corner_radius: 24,
-                padding: Padding { left: 32, right: 32, top: 32, bottom: 32 },
+                lock_in_center: true,
                 drop_shadow: DropShadow { offset: [1, 1], blur: 4, spread: 2, color: ColorConfig { hex: "#151615".into(), opacity: Some(45) }}
             },
             theme: Theme {
