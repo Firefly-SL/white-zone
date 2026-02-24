@@ -3,6 +3,7 @@
 </h1>
 
 Desktop widget built with Rust and Egui, designed to visualize your annual progress.
+
 I would like to let you know, this widget is on it's early developing area, and me on my busiest time in life. This project was build in order for me to learn Rust and to help a friend of mine with his needs. Still i am looking forward to improving this.
 
 ## Features
