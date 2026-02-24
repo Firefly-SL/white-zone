@@ -36,7 +36,7 @@ To build and run white-zone, you will need to have Rust and Cargo installed. If 
     ```
 2.  **To run the widget without building.**:
     ```bash
-    cargo run --release
+    cargo run --release --bin white-zone
     ```
 3.  **To build the widget**:
     ```bash
