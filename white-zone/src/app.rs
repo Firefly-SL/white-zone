@@ -18,6 +18,10 @@ impl App {
         let config = config::load_or_create_config().unwrap();
         fonts::configure_fonts(ctx);
         
+        ctx.style_mut(|style| {
+            style.interaction.selectable_labels = false;
+        });
+        
         // days_passed (it returns actual days passed in a year scope)
         let (days_passed, days_passed_percentage) = time::days_passed();
         

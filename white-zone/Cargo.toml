@@ -7,5 +7,5 @@ edition = "2024"
 chrono = "0.4.43"
 eframe = "0.33.3"
 serde = { version = "1.0", features = ["derive"] }
-toml = "0.8"
-dirs = "5.0"
+toml = "1.0.3"
+dirs = "6.0.0"

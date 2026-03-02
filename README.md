@@ -29,6 +29,8 @@ If your widget isn't loading, delete the config.toml file and try to launch it a
 ## Build from source
 To build and run white-zone, you will need to have Rust and Cargo installed. If you don't have them, you can install them by following the instructions on the [official Rust website](https://www.rust-lang.org/tools/install).
 
+Cause of me being and idiot, don't build it from source, work is goin on.
+
 1.  **Clone the repository**:
     ```bash
     git@github.com:Firefly-SL/white-zone.git
@@ -40,7 +42,7 @@ To build and run white-zone, you will need to have Rust and Cargo installed. If 
     ```
 3.  **To build the widget**:
     ```bash
-    cargo build --release
+    cargo build --release --bin white-zone
     ```
     The `--release` flag is recommended (not mandatory) for better performance.
 
@@ -73,4 +75,4 @@ Contributions are welcome! This project is on the early satges and i want to mak
 
 The source code for white-zone is licensed under the GPL 3.0 license. See the [LICENSE](LICENSE) file for more details.
 
-The fonts included in this project (`Poppins-Regular.ttf` and `Poppins-SemiBold.ttf`) are licensed under the Open Font License (OFL). See [OFL](src/fonts/OFL.txt) for more details.
+The fonts included in this project (`Poppins-Regular.ttf` and `Poppins-SemiBold.ttf`) are licensed under the Open Font License (OFL). See [OFL](asset/fonts/OFL.txt) for more details.
